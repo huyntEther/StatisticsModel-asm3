@@ -12,21 +12,24 @@ pairs(salary ~ age + college + grad + comten + ceoten + sales + profits + mktval
 #stepwise cho model theo log_salary
 m_full_log <- lm(lsalary ~ . - salary, data=data1)
 backAIC_log <- step(m_full_log,direction="backward")
+summary(backAIC_log)
 m_log_model <- lm(lsalary ~ grad + comten + ceoten + lsales + lmktval + ceotensq, data=data1)
-summary(m_log_model) # bỏ bớt biến
+summary(m_log_model) # bỏ bớt biến grad
 m_log_model_reduced <- lm(lsalary ~  comten + ceoten + lsales + lmktval + ceotensq, data=data1)
+summary(m_log_model_reduced)
 anova(m_log_model_reduced,m_log_model) #mô hình reduced
 
 #stepwise cho model theo salary
 m_full_linear <- lm(salary ~ . - lsalary, data=data1)
 backAIC_linear <- step(m_full_linear,direction="backward")
-m_linear_model <- lm(salary ~ comten + ceotensq + mktval + lsales + ceotensq, data = data1)
+summary(backAIC_linear)
+m_linear_model <- lm(salary ~ comten + ceoten + mktval + lsales + ceotensq, data = data1)
 summary(m_linear_model)
-m_linear_model_reduced <- lm(salary ~   mktval + + lsales , data = data1)
-summary(m_linear_model_reduced)
-anova(m_linear_model_reduced,m_linear_model) #mô hình reduced
+#m_linear_model_reduced <- lm(salary ~  ceoten + mktval + lsales + ceotensq, data = data1)
+#summary(m_linear_model_reduced)
+#anova(m_linear_model_reduced,m_linear_model) #mô hình reduced
 
 ### chọn giữa log và linear
-summary(m_linear_model_reduced)
+summary(m_linear_model)
 summary(m_log_model_reduced)
 # mô hình log có R2 adjusted bé hơn

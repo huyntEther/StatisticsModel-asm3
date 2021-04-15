@@ -5,7 +5,16 @@ head(data1)
 #summary(m1)
 #m2 <- lm(data1$salary ~ data1$comtensq)
 
+#add var
+data1$multi <- data1$salary * data1$lsalary
+data1$devide <- data1$salary / data1$lsalary
+#plot
 pairs(salary ~ age + college + grad + comten + ceoten + sales + profits + mktval + lsalary + lsales + lmktval + comtensq + ceotensq + profmarg,data = data1)
+
+pairs(lsalary ~ .,data = data1)
+
+pairs(multi ~ .,data = data1)
+pairs(devide ~ .,data = data1)
 
 #m_log <- lm(lsalary ~ lsales + lmktval + comtensq + ceotensq + profmarg, data= data1)
 
@@ -33,3 +42,17 @@ summary(m_linear_model)
 summary(m_linear_model)
 summary(m_log_model_reduced)
 # mô hình log có R2 adjusted bé hơn
+
+
+### other choices
+m_multi <- data1
+m_multi$multi <- m_multi$salary*m_multi$lsalary
+
+m_devide_1 <- data1
+m_devide_1$devide1 <- m_multi$salary / m_multi$lsalary
+
+step(lm(salary / lsalary ~ .,data=data1),direction="backward")
+summary(lm(salary*lsalary ~ comten + ceoten + mktval + lsales + ceotensq,data=data1))
+
+step(lm(salary + lsalary ~ .,data=data1),direction="backward")
+summary(lm(salary + lsalary ~ comten + ceoten + mktval + lsales + ceotensq,data=data1))
